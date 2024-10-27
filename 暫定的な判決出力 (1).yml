@@ -1,0 +1,206 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 暫定的な判決出力
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1729910234568-source-1729910872040-target
+      source: '1729910234568'
+      sourceHandle: source
+      target: '1729910872040'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1729910872040-source-1729911121026-target
+      source: '1729910872040'
+      sourceHandle: source
+      target: '1729911121026'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 開始
+        type: start
+        variables:
+        - label: subject
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: subject
+        - label: plaintiff_claim
+          max_length: 100
+          options: []
+          required: true
+          type: text-input
+          variable: plaintiff_claim
+        - label: plaintiff_name
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: plaintiff_name
+        - label: defendant_name
+          max_length: 10
+          options: []
+          required: true
+          type: text-input
+          variable: defendant_name
+        - label: defendant_claim
+          max_length: 100
+          options: []
+          required: true
+          type: text-input
+          variable: defendant_claim
+      height: 194
+      id: '1729910234568'
+      position:
+        x: 80
+        y: 244.88514052338763
+      positionAbsolute:
+        x: 80
+        y: 244.88514052338763
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: chatgpt-4o-latest
+          provider: openai
+        prompt_template:
+        - id: f8b06281-b5f5-4400-a2e7-2601ca37b2da
+          role: system
+          text: 'あなたは裁判官であり、公正無私な視点から事実を分析し、あらゆる証拠と論理を検討して判断を下す役割を担っています。情緒に流されることなく、論理的かつ倫理的な観点からバランスの取れた判断をすることを最優先とし、すべての利害関係者に配慮した公平な評価を行います。仮定のシナリオにおいても、法律や倫理基準、そして根拠に基づいた考察をもって発言を行い、他者の主張の真偽を見極め、適切な判断の根拠を提示しながら、公正な判決を導き出してください。
+
+
+            裁判のタイトル
+
+            {{#1729910234568.subject#}}
+
+
+            原告({{#1729910234568.plaintiff_name#}}さん)の主張
+
+            {{#1729910234568.plaintiff_claim#}}
+
+
+            被告({{#1729910234568.defendant_name#}}さん) の主張
+
+            {{#1729910234568.defendant_name#}}
+
+
+            あなたは裁判官として，これらの主張を元に，暫定的な判決のみを出力してください．
+
+            暫定的な判決なので，どちらかといえばというのもありです．また，名前があるので，文字数に余裕があれば原告の〇〇さんみたいに話してください．
+
+
+            100文字以内で，裁判官が話しているような文体で，話すセリフのみ出力してください．'
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1729910872040'
+      position:
+        x: 381.9380633624104
+        y: 244.88514052338763
+      positionAbsolute:
+        x: 381.9380633624104
+        y: 244.88514052338763
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1729910872040'
+          - text
+          variable: text
+        selected: true
+        title: 終了
+        type: end
+      height: 90
+      id: '1729911121026'
+      position:
+        x: 686.9690316812053
+        y: 244.88514052338763
+      positionAbsolute:
+        x: 686.9690316812053
+        y: 244.88514052338763
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -324.7960070643903
+      y: -72.37377837190266
+      zoom: 1.3902800405346525
