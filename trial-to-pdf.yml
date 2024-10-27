@@ -1,0 +1,219 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: trial-to-pdf
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1729998498504-source-1729998891300-target
+      source: '1729998498504'
+      sourceHandle: source
+      target: '1729998891300'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1729998891300-source-1729999417198-target
+      source: '1729998891300'
+      sourceHandle: source
+      target: '1729999417198'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 開始
+        type: start
+        variables:
+        - label: subject
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: subject
+        - label: plaintiff_claim
+          max_length: 100
+          options: []
+          required: true
+          type: text-input
+          variable: plaintiff_claim
+        - label: plaintiff_final_claim
+          max_length: 100
+          options: []
+          required: true
+          type: text-input
+          variable: plaintiff_final_claim
+        - label: defendant_claim
+          max_length: 100
+          options: []
+          required: true
+          type: text-input
+          variable: defendant_claim
+        - label: defendant_final_claim
+          max_length: 100
+          options: []
+          required: true
+          type: text-input
+          variable: defendant_final_claim
+        - label: provisional_judgment
+          max_length: 100
+          options: []
+          required: true
+          type: text-input
+          variable: provisional_judgment
+        - label: past_messages
+          max_length: 1000
+          options: []
+          required: true
+          type: paragraph
+          variable: past_messages
+        - label: plaintiff_name
+          max_length: 10
+          options: []
+          required: true
+          type: text-input
+          variable: plaintiff_name
+        - label: defendant_name
+          max_length: 10
+          options: []
+          required: true
+          type: text-input
+          variable: defendant_name
+      height: 298
+      id: '1729998498504'
+      position:
+        x: 80
+        y: 286
+      positionAbsolute:
+        x: 80
+        y: 286
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o
+          provider: openai
+        prompt_template:
+        - id: 1b5cf4bb-0a87-45a1-8b46-41c6cadecb0c
+          role: system
+          text: "## あなたの役割\nあなたは裁判官であり、公正無私な視点から事実を分析し、あらゆる証拠と論理を検討して判断を下す役割を担っています。情緒に流されることなく、論理的かつ倫理的な観点からバランスの取れた判断をすることを最優先とし、すべての利害関係者に配慮した公平な評価を行います。仮定のシナリオにおいても、法律や倫理基準、そして根拠に基づいた考察をもって発言を行い、他者の主張の真偽を見極め、適切な判断の根拠を提示しながら、公正な判決を導き出してください。\n\
+            今回あなたにやってもらうプロセスはプロジェクトXにおける\n原告の主張\n被告の主張\n裁判官の暫定的な内容\n原告の最終主張\n被告の最終主張\n\
+            チャットの履歴\nをもとに話し合いの内容を100文字以内で要約することです．\n\n## プロジェクトXの概要\n「プロジェクトX」は、AIが補助し、ゲーム感覚で楽しく揉め事を解決するWebアプリケーションです。\n\
+            ### ユーザーのロールの種類\n{\"plaintiff\": \"原告(A)\",\"defendant\": \"被告(B)\",\"\
+            spectator\": \"傍聴人\",\"judge\": \"AI裁判官\"}\n### サービスの一連の流れ\n1. 今回の裁判の議題を決める\n\
+            2. 原告(A)と被告(B)がそれぞれ、一番最初の主張を述べる\n3. AI裁判官が暫定的な判決を下す（他のワークフローで実行）\n4. 原告(A)と被告(B)のチャットでのやり取りと、それに対する傍聴人と裁判官の質問によって、議論が行われる。この間、原告(A)と被告(B)は主張の変更を行うことができる。（今回のワークフローで扱う段階）\n\
+            5. AI裁判官が最終判決を下す。\n6. 終了\n\n## 入力変数の説明\n{\n  \"この裁判の議題\": \"{{#1729998498504.subject#}}\"\
+            ,\n  \"原告(A)の名前\": \"{{#1729998498504.plaintiff_name#}}\",\n  \"被告(B)の名前\"\
+            : \"{{#1729998498504.defendant_name#}}\",\n  \"原告(A)の現在の主張\": \"{{#1729998498504.plaintiff_claim#}}\"\
+            ,\n  \"被告(B)の現在の主張\": {{#1729998498504.defendant_claim#}}\",\n  \"これまでのやり取りのメッセージのリスト\"\
+            : \"{{#1729998498504.past_messages#}}\",\n}\nただし、これまでのやり取りのメッセージのリストは辞書の配列の形式になっています。\n\
+            \n## 追加の用語の説明\n{\"メインチャット\": \"原告(A)、被告(B)、AI裁判官の3人のみが発言するチャットである。1つの裁判あたり1つのメインチャットが作られる。裁判の議論が行われる場所。\"\
+            ,\"サブチャット\": \"AI裁判官、各傍聴人の2人のみが発言する閉じたチャットである。1人の傍聴人あたり1つのサブチャットが作られる。傍聴人の質問を受け入れる場所\"\
+            }\n\nそれではプロセスの出力結果である，話し合いの内容を100文字で出力してください"
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1729998891300'
+      position:
+        x: 382
+        y: 286
+      positionAbsolute:
+        x: 382
+        y: 286
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1729998891300'
+          - text
+          variable: text
+        selected: false
+        title: 終了
+        type: end
+      height: 90
+      id: '1729999417198'
+      position:
+        x: 686
+        y: 286
+      positionAbsolute:
+        x: 686
+        y: 286
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -148
+      y: 26
+      zoom: 1
